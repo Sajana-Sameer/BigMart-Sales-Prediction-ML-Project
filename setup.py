@@ -35,7 +35,7 @@ def get_requirements(file_path:str)->List[str]:
 setup(
 name='BigMart-Sales-Prediction-ML-Project',
 version='0.0.1',
-author='Sajana',
+author='Sajana Sameer',
 author_email='sajjusam2014@gmail.com',
 packages=find_packages(),
 install_requires = get_requirements('requirements.txt')
