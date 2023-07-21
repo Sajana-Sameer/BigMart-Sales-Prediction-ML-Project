@@ -1,4 +1,9 @@
 pandas
 numpy
 seaborn
--e .
+scikit-learn
+xgboost
+dill
+category_encoders
+matplotlib
+#-e .
