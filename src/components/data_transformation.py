@@ -45,9 +45,9 @@ class DataCleaner:
       #  print(X.head(10))
         X['Outlet_Size'] = X.groupby('Outlet_Type')['Outlet_Size'].transform(lambda x: x.fillna(mode(x)))
 
-        X['Item_Category']=X['Item_Identifier'].str[:2].map({'FD' : 'Food','NC' : 'Non-Consumable','DR' : 'Drinks'})
+      #  X['Item_Category']=X['Item_Identifier'].str[:2].map({'FD' : 'Food','NC' : 'Non-Consumable','DR' : 'Drinks'})
         X['Item_Fat_Content'] =X['Item_Fat_Content'].replace({ 'LF' : 'Low Fat','reg' : 'Regular','low fat' : 'Low Fat'})
-        X.loc[X['Item_Category']=="Non-Consumable",'Item_Fat_Content'] = "Non-Edible"
+        X.loc[X['Item_Identifier'].str[:2] =="NC",'Item_Fat_Content'] = "Non-Edible"
         logging.info(" categorical values cleaned")  
     
         logging.info("Entering LAbel Encode data")
@@ -80,7 +80,7 @@ class DataTransformation:
             numerical_columns = ["Item_Weight", "Item_Visibility","Item_MRP","Outlet_Establishment_Year","Outlet_Size",
                                  "Outlet_Location_Type","Outlet_Type"]
             categorical_columns = [
-                "Item_Fat_Content",'Item_Category',
+                "Item_Fat_Content",
                 "Item_Type",
             ]
             
@@ -139,8 +139,8 @@ class DataTransformation:
             train_df=cleaner.clean_data(train_df)
             test_df=cleaner.clean_data(test_df)
             
-            train_df[['Item_Fat_Content', 'Item_Category', 'Item_Type']] = train_df[['Item_Fat_Content', 'Item_Category', 'Item_Type']].astype(str)
-            test_df[['Item_Fat_Content', 'Item_Category', 'Item_Type']] = test_df[['Item_Fat_Content', 'Item_Category', 'Item_Type']].astype(str)
+            train_df[['Item_Fat_Content', 'Item_Type']] = train_df[['Item_Fat_Content',  'Item_Type']].astype(str)
+            test_df[['Item_Fat_Content',  'Item_Type']] = test_df[['Item_Fat_Content',  'Item_Type']].astype(str)
 
             logging.info("Read train and test data completed")
 

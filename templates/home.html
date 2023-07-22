@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item Details Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url("/static/bigmart.webp");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+		
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            display: grid;
+            grid-gap: 10px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            appearance: none; /* Remove default arrow */
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><path d='M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z'/></svg>");
+            background-repeat: no-repeat;
+            background-position: right center;
+        }
+
+        input[type="submit"] {
+            width: auto;
+            padding: 10px 20px;
+            margin-top: 10px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+
+	<header>
+        <!-- Set the height and width of the image using the height and width attributes -->
+        <img src="{{ url_for('static', filename='log1.jpg') }}" alt="LOGO" height="150" width="100%">
+    </header>
+    <div class="container">
+        <h1>Item Details Form</h1>
+        <form id="itemForm" action ="{{ url_for('predict_datapoint')}}" method="post">
+
+            <label for="item_weight">Item Weight:</label>
+            <input type="text" id="item_weight" name="item_weight" required>
+
+            <label for="item_fat_content">Item Fat Content:</label>
+            <select name="item_fat_content" id="item_fat_content">
+                <option value="Low Fat">Low Fat</option>
+                <option value="Regular">Regular</option>
+                <option value="Non-Edible">Non-Edible</option>
+            </select>
+
+            <label for="item_visibility">Item Visibility:(enter between 0 and 1)</label>
+            <input type="text" id="item_visibility" name="item_visibility" min="0" max="1" title="Please enter b/w 0 and 1 " required>
+
+            <label for="item_type">Item Type:</label>
+            <select name="item_type" id="item_type">
+                <option value="Baking Goods">Baking Goods</option>
+                <option value="Breads">Breads</option>
+                <option value="Breakfast">Breakfast</option>
+                <option value="Canned">Canned</option>
+                <option value="Dairy">Dairy</option>
+                <option value="Frozen Foods">Frozen Foods</option>
+                <option value="Fruits and Vegetables">Fruits and Vegetables</option>
+                <option value="Hard Drinks">Hard Drinks</option>
+                <option value="Health and Hygiene" disabled>Health and Hygiene</option>
+                <option value="Household" disabled>Household</option>
+                <option value="Meat">Meat</option>
+                <option value="Others" disabled>Others</option>
+                <option value="Seafood">Seafood</option>
+                <option value="Snack Foods">Snack Foods</option>
+                <option value="Soft Drinks">Soft Drinks</option>
+                <option value="Starchy Foods">Starchy Foods</option>
+            </select>
+
+            <label for="item_mrp">Item MRP:</label>
+            <input type="text" id="item_mrp" name="item_mrp" required>
+
+            <label for="outlet_establishment_year">Outlet Establishment Year:</label>
+            <input type="number" id="outlet_establishment_year" name="outlet_establishment_year" min="1900" max="2023" pattern="[0-9]{4}" title="Please enter a 4-digit year less than 2023" required>
+
+            <label for="outlet_size">Outlet Size:</label>
+            <select name="outlet_size" id="outlet_size">
+                <option value="0">High</option>
+                <option value="1">Medium</option>
+                <option value="2">Small</option>
+            </select>
+
+            <label for="outlet_location_type">Outlet Location Type:</label>
+            <select name="outlet_location_type" id="outlet_location_type">
+                <option value="0">Tier 1</option>
+                <option value="1">Tier 2</option>
+                <option value="2">Tier 3</option>
+            </select>
+
+            <label for="outlet_type">Outlet Type:</label>
+            <select name="outlet_type" id="outlet_type">
+                <option value="0">Grocery Store</option>
+                <option value="1">Supermarket Type1</option>
+                <option value="2">Supermarket Type2</option>
+                <option value="3">Supermarket Type3</option>
+            </select>
+
+            <input type="submit" value="Submit">
+        </form>
+        <h2>
+            The prediction of ITEM OUTLET SALES is {{results}}
+         </h2>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const itemFatContentSelect = document.getElementById("item_fat_content");
+            const itemTypeSelect = document.getElementById("item_type");
+
+            itemFatContentSelect.addEventListener("change", function () {
+                const selectedValue = this.value;
+                const isNonFoodItem = selectedValue === "Non-Edible";
+				const nonFoodTypes = ["Health and Hygiene", "Household", "Others"];
+                itemTypeSelect.querySelectorAll("option").forEach(function (option) {
+                    if (isNonFoodItem) {
+                        
+                        option.disabled = !nonFoodTypes.includes(option.value);
+                    } else {
+                        option.disabled = nonFoodTypes.includes(option.value);
+                    }
+                });
+            });
+
+        });
+        document.getElementById("item_visibility").addEventListener("input", function () {
+            // Get the value entered by the user
+            const inputValue = parseFloat(this.value);
+    
+            // Check if the value is not a number or if it's outside the range of 0 to 1
+            if (isNaN(inputValue) || inputValue <= 0 || inputValue >= 1) {
+                // If the input is invalid, set a custom validity message
+                this.setCustomValidity("Please enter a value between 0(exclusive) and 1 (exclusive).");
+            } else {
+                // If the input is valid, clear any custom validity message
+                this.setCustomValidity("");
+            }
+        });
+    </script>
+</body>
+
+</html>
