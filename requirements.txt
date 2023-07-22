@@ -6,4 +6,5 @@ xgboost
 dill
 matplotlib
 Flask
+gunicorn
 #-e .
