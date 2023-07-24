@@ -6,5 +6,5 @@ xgboost
 dill
 matplotlib
 Flask
-gunicorn
+streamlit
 #-e .
