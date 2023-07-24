@@ -72,6 +72,8 @@ Dictionary Tree
 │   └── index.html
 ├── requirements.txt
 ├── app.py
+├── streamlit_app.py
+├── setup.py
 ├── LICENSE
 └── README.md
 ```
