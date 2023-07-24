@@ -1,4 +1,5 @@
 # BigMart Sales Prediction End to End Project
+<<<<<<< HEAD
 # BigMart Sale Prediction
 
 ![BigMart Sale Prediction](./static/bigmart.webp)
@@ -166,3 +167,5 @@ For any inquiries or questions, you can reach out to the project maintainer:
 - Email: sajjusam2014@gmail.com
 
 Feel free to update the above details with your specific project information. 
+=======
+>>>>>>> 2fa04b64852615216ef8e2f70ad4563729e7f618
